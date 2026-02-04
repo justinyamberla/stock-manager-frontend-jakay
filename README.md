@@ -1,0 +1,1 @@
+# stock-manager-frontend-jakay
