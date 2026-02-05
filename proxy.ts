@@ -6,37 +6,31 @@ export function proxy(request: NextRequest) {
     const token = request.cookies.get('token')?.value
     const path = request.nextUrl.pathname
 
-    const isApi = path.startsWith('/api')
-    const isAuthApi = path.startsWith('/api/auth')
     const isLoginPage = path.startsWith('/login')
     const isAdminPage = path.startsWith('/admin')
 
-    if (isAuthApi) {
-        return NextResponse.next()
-    }
+    let hasValidToken = false
 
-    if (isApi) {
-        if (!token) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-        }
-
+    if (token) {
         try {
             verifyToken(token)
-            return NextResponse.next()
+            hasValidToken = true
         } catch {
-            return NextResponse.json({ error: 'Invalid token' }, { status: 403 })
+            hasValidToken = false
         }
-    }
-
-    if (isAdminPage && !token) {
-        return NextResponse.redirect(new URL('/login', request.url))
-    }
-
-    if (isLoginPage) {
-        return NextResponse.next()
     }
 
     if (path === '/') {
+        return NextResponse.redirect(
+            new URL(hasValidToken ? '/admin' : '/login', request.url)
+        )
+    }
+
+    if (isLoginPage && hasValidToken) {
+        return NextResponse.redirect(new URL('/admin', request.url))
+    }
+
+    if (isAdminPage && !hasValidToken) {
         return NextResponse.redirect(new URL('/login', request.url))
     }
 
@@ -45,8 +39,8 @@ export function proxy(request: NextRequest) {
 
 export const config = {
     matcher: [
-        '/api/:path*',
-        '/admin/:path*',
-        '/'
+        '/',
+        '/login',
+        '/admin/:path*'
     ],
 }

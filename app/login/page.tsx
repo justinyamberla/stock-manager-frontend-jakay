@@ -1,23 +1,42 @@
 'use client'
 
 import { useState } from 'react'
+import {loginAdmin} from "@/services/AuthService";
+import Loading from "@/components/Loading";
+import {useRouter} from "next/navigation";
 
 export default function LoginPage() {
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
-    const [error, setError] = useState<string | null>(null)
+    const router = useRouter();
 
-    const handleSubmit = (e: React.SubmitEvent) => {
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+    const [error, setError] = useState<string | null>(null)
+    const [isLoading, setIsLoading] = useState(false)
+
+    const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault()
 
-        // Temporal: luego conectamos JWT
-        if (!username || !password) {
-            setError('Por favor, ingresa el usuario y la contraseña.')
+        if (!email || !password) {
+            setError('Por favor, ingresa el correo y la contraseña.')
             return
         }
 
-        console.log('Login attempt:', { username, password })
-        setError(null)
+        console.log('Login attempt:', { email: email, password })
+
+        try {
+            setIsLoading(true)
+            const res = await loginAdmin({ email, password })
+
+            if (!res.success) {
+                setError('Credenciales inválidas. Intenta de nuevo.')
+                return
+            }
+
+            router.push('/admin');
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     return (
@@ -37,11 +56,11 @@ export default function LoginPage() {
                             Usuario
                         </label>
                         <input
-                            type="text"
-                            value={username}
-                            onChange={e => setUsername(e.target.value)}
+                            type="email"
+                            value={email}
+                            onChange={e => setEmail(e.target.value)}
                             className="w-full rounded-lg border border-slate-400 px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-700"
-                            placeholder="admin"
+                            placeholder="admin@example.com"
                         />
                     </div>
 
@@ -72,6 +91,8 @@ export default function LoginPage() {
                     </button>
                 </form>
             </div>
+
+            <Loading show={isLoading} />
         </div>
     )
 }
