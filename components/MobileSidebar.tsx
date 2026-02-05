@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect } from 'react'
+import { useAuth } from '@/context/AuthContext'
 
 const navItems = [
     { label: 'Dashboard', path: '/admin' },
@@ -12,8 +13,15 @@ const navItems = [
     { label: 'Historial de movimientos', path: '/admin/history' },
 ]
 
-export default function MobileSidebar({open, setOpen}: { open: boolean, setOpen: (value: boolean) => void }) {
+export default function MobileSidebar({
+                                          open,
+                                          setOpen,
+                                      }: {
+    open: boolean
+    setOpen: (value: boolean) => void
+}) {
     const pathname = usePathname()
+    const { logout } = useAuth()
 
     useEffect(() => {
         setOpen(false)
@@ -28,17 +36,18 @@ export default function MobileSidebar({open, setOpen}: { open: boolean, setOpen:
 
     return (
         <div className="fixed inset-0 z-50 md:hidden bg-black/40">
-            <aside className="w-64 h-full bg-slate-300 text-slate-900 shadow-md shadow-black/20 p-6">
-                <div className="flex justify-end">
-                    <button
-                        onClick={() => setOpen(false)}
-                        className="mb-6 text-slate-600 hover:text-slate-900 cursor-pointer text-sm"
-                    >
-                        Cerrar ✕
-                    </button>
-                </div>
 
-                <nav className="space-y-1">
+            <aside className="w-64 h-full bg-slate-300 text-slate-900 shadow-md shadow-black/20 flex flex-col p-6">
+
+                <button
+                    onClick={() => setOpen(false)}
+                    className="mb-6 text-slate-600 hover:text-slate-900 text-sm self-end transition cursor-pointer"
+                >
+                    Cerrar ✕
+                </button>
+
+                {/* Navigation */}
+                <nav className="space-y-1 flex-1">
                     {navItems.map(item => {
                         const active = isActive(item.path)
 
@@ -59,6 +68,18 @@ export default function MobileSidebar({open, setOpen}: { open: boolean, setOpen:
                         )
                     })}
                 </nav>
+
+                {/* Logout */}
+                <button
+                    onClick={() => {
+                        logout()
+                        setOpen(false)
+                    }}
+                    className="text-red-600 hover:text-red-700 hover:bg-red-50 px-3 py-2 rounded text-sm font-semibold transition cursor-pointer"
+                >
+                    Cerrar sesión
+                </button>
+
             </aside>
         </div>
     )

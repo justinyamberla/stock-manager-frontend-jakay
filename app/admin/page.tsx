@@ -2,7 +2,7 @@ export default function DashboardPage() {
     return (
         <div className="space-y-6">
 
-            <p>
+            <p className="text-sm">
                 En esta sección se muestra un resumen del inventario y las actividades recientes.
             </p>
 
