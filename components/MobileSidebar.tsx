@@ -29,13 +29,14 @@ export default function MobileSidebar({open, setOpen}: { open: boolean, setOpen:
     return (
         <div className="fixed inset-0 z-50 md:hidden bg-black/40">
             <aside className="w-64 h-full bg-slate-300 text-slate-900 shadow-md shadow-black/20 p-6">
-
-                <button
-                    onClick={() => setOpen(false)}
-                    className="mb-6 text-slate-600 hover:text-slate-900 cursor-pointer"
-                >
-                    Cerrar ✕
-                </button>
+                <div className="flex justify-end">
+                    <button
+                        onClick={() => setOpen(false)}
+                        className="mb-6 text-slate-600 hover:text-slate-900 cursor-pointer text-sm"
+                    >
+                        Cerrar ✕
+                    </button>
+                </div>
 
                 <nav className="space-y-1">
                     {navItems.map(item => {
