@@ -1,30 +1,52 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { verifyToken } from "@/lib/jwt"
+import { verifyToken } from '@/lib/jwt'
 
-// This function can be marked `async` if using `await` inside
 export function proxy(request: NextRequest) {
-    const token = request.cookies.get("token")?.value
+    const token = request.cookies.get('token')?.value
+    const path = request.nextUrl.pathname
 
-    if (!token && request.nextUrl.pathname.startsWith("/api")) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    const isApi = path.startsWith('/api')
+    const isAuthApi = path.startsWith('/api/auth')
+    const isLoginPage = path.startsWith('/login')
+    const isAdminPage = path.startsWith('/admin')
+
+    if (isAuthApi) {
+        return NextResponse.next()
     }
 
-    if (token) {
+    if (isApi) {
+        if (!token) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+        }
+
         try {
             verifyToken(token)
             return NextResponse.next()
         } catch {
-            return NextResponse.json({ error: "Invalid token" }, { status: 403 })
+            return NextResponse.json({ error: 'Invalid token' }, { status: 403 })
         }
+    }
+
+    if (isAdminPage && !token) {
+        return NextResponse.redirect(new URL('/login', request.url))
+    }
+
+    if (isLoginPage) {
+        return NextResponse.next()
+    }
+
+    if (path === '/') {
+        return NextResponse.redirect(new URL('/login', request.url))
     }
 
     return NextResponse.next()
 }
 
-// Alternatively, you can use a default export:
-// export default function proxy(request: NextRequest) { ... }
-
 export const config = {
-    matcher: ["/api/:path*"]
+    matcher: [
+        '/api/:path*',
+        '/admin/:path*',
+        '/'
+    ],
 }

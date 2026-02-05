@@ -1,8 +1,8 @@
-import { NextResponse } from "next/server"
+import { NextResponse, NextRequest } from "next/server"
 import { items } from "@/lib/db"
 
 export async function GET(
-    _: Request,
+    _: NextRequest,
     { params }: { params: { id: string } }
 ) {
     const related = items.filter(i => i.categoryId === params.id)

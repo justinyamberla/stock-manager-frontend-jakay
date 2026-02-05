@@ -1,9 +1,9 @@
-import { NextResponse } from "next/server"
+import { NextResponse, NextRequest } from "next/server"
 import { deactivateItem } from "@/repositories/item.repo"
 import { logMovement } from "@/repositories/movement.repo"
 
 export async function PATCH(
-    _: Request,
+    _: NextRequest,
     { params }: { params: { id: string } }
 ) {
     try {
