@@ -22,7 +22,7 @@ export default function Sidebar() {
     return (
         <aside className="hidden md:block w-64 bg-slate-300 text-slate-900 shadow-md shadow-black/20">
             <div className="p-6 font-bold text-lg tracking-wide">
-                Gestión de inventario
+                GESTION DE INVENTARIO
             </div>
 
             <nav className="px-3 space-y-1">
