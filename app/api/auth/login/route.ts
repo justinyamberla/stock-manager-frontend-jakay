@@ -1,4 +1,5 @@
-import { NextResponse, NextRequest } from "next/server"
+import { NextResponse } from "next/server"
+import type { NextRequest } from 'next/server'
 import { adminUser } from "../../../../lib/db"
 import { signToken } from "../../../../lib/jwt"
 
