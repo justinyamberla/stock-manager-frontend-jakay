@@ -22,8 +22,6 @@ export default function LoginPage() {
             return
         }
 
-        console.log('Login attempt:', { email: email, password })
-
         try {
             setIsLoading(true)
             const res = await loginAdmin({ email, password })
