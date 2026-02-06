@@ -33,7 +33,7 @@ export default function CreateCategoryModal({ onClose }: { onClose: () => void }
                         <button
                             type="button"
                             onClick={onClose}
-                            className="px-3 py-2 text-sm border rounded hover:bg-slate-50 cursor-pointer"
+                            className="px_toggle bg-slate-200 px-4 py-2 rounded text-sm hover:bg-slate-300 cursor-pointer"
                         >
                             Cancelar
                         </button>
