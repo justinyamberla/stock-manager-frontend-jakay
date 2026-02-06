@@ -22,12 +22,12 @@ export function proxy(request: NextRequest) {
 
     if (path === '/') {
         return NextResponse.redirect(
-            new URL(hasValidToken ? '/admin' : '/login', request.url)
+            new URL(hasValidToken ? '/admin/categories' : '/login', request.url)
         )
     }
 
     if (isLoginPage && hasValidToken) {
-        return NextResponse.redirect(new URL('/admin', request.url))
+        return NextResponse.redirect(new URL('/admin/categories', request.url))
     }
 
     if (isAdminPage && !hasValidToken) {

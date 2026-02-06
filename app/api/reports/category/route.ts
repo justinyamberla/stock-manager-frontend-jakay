@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
-import { getMovements } from "@/repositories/movement.repo"
+import { getItemsCountByCategory } from "@/repositories/report.repo"
 
 export async function GET() {
-    const data = getMovements()
+    const data = getItemsCountByCategory()
     return NextResponse.json({ success: true, data })
 }

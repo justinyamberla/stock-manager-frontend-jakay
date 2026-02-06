@@ -5,7 +5,6 @@ import { usePathname } from 'next/navigation'
 import { useAuth } from '@/context/AuthContext'
 
 const navItems = [
-    { label: 'Dashboard', path: '/admin' },
     { label: 'Categorías', path: '/admin/categories' },
     { label: 'Bienes', path: '/admin/items' },
     { label: 'Reportes', path: '/admin/reports' },
