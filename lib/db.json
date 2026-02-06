@@ -1,0 +1,19 @@
+{
+  "adminUser": {
+    "id": "admin_1",
+    "email": "admin@test.com",
+    "passwordHash": "123456",
+    "role": "ADMIN"
+  },
+  "categories": [
+    {
+      "id": "cat_d81fa0e5-9dde-4bba-8fc8-8de514ccc825",
+      "name": "Electrónica",
+      "description": "Dispositivos electrónicos de oficina",
+      "status": "ACTIVE",
+      "createdAt": "2026-02-06T05:19:51.918Z"
+    }
+  ],
+  "items": [],
+  "movements": []
+}

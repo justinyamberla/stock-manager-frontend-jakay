@@ -1,4 +1,4 @@
-import { items } from "@/lib/db"
+import { items } from "@/lib/db.json"
 import { Item } from "@/types/domain"
 import { generateId, nowISO } from "@/lib/utils"
 

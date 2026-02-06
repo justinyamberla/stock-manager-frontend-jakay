@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { categories, items } from "@/lib/db"
+import { categories, items } from "@/lib/db.json"
 
 export async function GET() {
     const report = categories.map(category => {

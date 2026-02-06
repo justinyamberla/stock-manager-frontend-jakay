@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from "next/server"
-import { items } from "@/lib/db"
+import { items } from "@/lib/db.json"
 
 export async function GET(
     _: NextRequest,

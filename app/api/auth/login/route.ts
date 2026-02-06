@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from 'next/server'
-import { adminUser } from "@/lib/db"
+import { adminUser } from "@/lib/db.json"
 import { signToken } from "@/lib/jwt"
 
 export async function POST(req: NextRequest) {

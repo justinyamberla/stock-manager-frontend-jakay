@@ -16,7 +16,7 @@ export default function CreateCategoryModal({
     const [description, setDescription] = useState("")
     const [loading, setLoading] = useState(false)
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault()
 
         if (!name.trim() || !description.trim()) {

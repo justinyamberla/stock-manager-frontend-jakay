@@ -1,4 +1,4 @@
-import { movements } from "@/lib/db"
+import { movements } from "@/lib/db.json"
 import { Movement } from "@/types/domain"
 import { generateId, nowISO } from "@/lib/utils"
 
