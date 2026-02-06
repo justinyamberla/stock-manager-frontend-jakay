@@ -1,9 +1,10 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import {usePathname, useRouter} from 'next/navigation'
 import { useEffect } from 'react'
-import { useAuth } from '@/context/AuthContext'
+import {logoutAdmin} from "@/services/AuthService";
+import toast from "react-hot-toast"
 
 const navItems = [
     { label: 'Categorías', path: '/admin/categories' },
@@ -12,15 +13,18 @@ const navItems = [
     { label: 'Historial de movimientos', path: '/admin/history' },
 ]
 
-export default function MobileSidebar({
-                                          open,
-                                          setOpen,
-                                      }: {
-    open: boolean
-    setOpen: (value: boolean) => void
-}) {
+export default function MobileSidebar({open, setOpen,}: { open: boolean, setOpen: (value: boolean) => void }) {
+    const router = useRouter();
     const pathname = usePathname()
-    const { logout } = useAuth()
+
+    const logout = async () => {
+        const res = await logoutAdmin()
+        if (res.success) {
+            router.push('/login')
+        } else {
+            toast.error("Error al cerrar sesión:", res.message)
+        }
+    }
 
     useEffect(() => {
         setOpen(false)
@@ -68,7 +72,6 @@ export default function MobileSidebar({
                     })}
                 </nav>
 
-                {/* Logout */}
                 <button
                     onClick={() => {
                         logout()

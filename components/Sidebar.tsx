@@ -1,8 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { useAuth } from '@/context/AuthContext'
+import {usePathname, useRouter} from 'next/navigation'
+import {logoutAdmin} from "@/services/AuthService";
+import toast from "react-hot-toast";
 
 const navItems = [
     { label: 'Categorías', path: '/admin/categories' },
@@ -13,7 +14,16 @@ const navItems = [
 
 export default function Sidebar() {
     const pathname = usePathname()
-    const { logout } = useAuth()
+    const router = useRouter();
+
+    const logout = async () => {
+        const res = await logoutAdmin()
+        if (res.success) {
+            router.push('/login')
+        } else {
+            toast.error("Error al cerrar sesión:", res.message)
+        }
+    }
 
     const isActive = (path: string) => {
         if (path === '/admin') return pathname === '/admin'
