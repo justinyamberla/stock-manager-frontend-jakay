@@ -14,28 +14,29 @@ export async function GET( _req: NextRequest, { params }: { params: Promise<{ id
         }, { status: 200 })
 
     } catch (err: any) {
-        return NextResponse.json(
-            { error: err.message },
-            { status: 404 }
-        )
+        return NextResponse.json({
+            success: false,
+            message: err.message,
+        }, {status: 404})
     }
 }
 export async function PUT( req: NextRequest, { params }: { params: Promise<{ id: string }> } ) {
     try {
-        const { name, description, status } = await req.json()
+        const { id } = await params
+        const data = await req.json()
 
-        const updated = updateCategory(
-            (await params).id,
-            name,
-            description,
-            status
-        )
+        const updated = updateCategory(id, data)
 
-        return NextResponse.json(updated)
+        return NextResponse.json({
+            success: true,
+            message: "Categoría actualizada correctamente",
+            data: updated,
+        }, { status: 201 })
+
     } catch (err: any) {
-        return NextResponse.json(
-            { error: err.message },
-            { status: 404 }
-        )
+        return NextResponse.json({
+            success: false,
+            message: err.message,
+        }, {status: 404})
     }
 }

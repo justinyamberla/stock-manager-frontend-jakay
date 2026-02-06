@@ -39,7 +39,7 @@ export function createCategory(data: Pick<Category, "name" | "description">) {
     return category
 }
 
-export function updateCategory(id: string, updates: Partial<Category>, description: any, status: any) {
+export function updateCategory(id: string, updates: Partial<Category>) {
     const db = readDB()
     const categories = db.categories
 

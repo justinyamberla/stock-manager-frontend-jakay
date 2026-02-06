@@ -9,9 +9,16 @@
     {
       "id": "cat_d81fa0e5-9dde-4bba-8fc8-8de514ccc825",
       "name": "Electrónica",
-      "description": "Dispositivos electrónicos de oficina",
+      "description": "Artículos electrónicos para oficina",
       "status": "ACTIVE",
       "createdAt": "2026-02-06T05:19:51.918Z"
+    },
+    {
+      "id": "cat_6e6d8970-5d64-4b1c-b45b-11a3907a335a",
+      "name": "Muebles",
+      "description": "Muebles y decoraciones",
+      "status": "INACTIVE",
+      "createdAt": "2026-02-06T05:57:04.838Z"
     }
   ],
   "items": [],

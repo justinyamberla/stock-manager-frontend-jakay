@@ -1,17 +1,62 @@
 'use client'
 
-import { useState } from 'react'
+import {useEffect, useState} from 'react'
+import { useParams } from 'next/navigation'
+import {getCategoryById, updateCategory} from "@/services/CategoryService";
+import toast from "react-hot-toast";
+import Loading from "@/components/Loading";
+import {Category} from "@/types/domain";
 
 export default function CategoryDetailPage() {
-    const [category, setCategory] = useState({
-        id: 'cat_001',
-        name: 'Electrónica',
-        description: 'Dispositivos electrónicos y accesorios',
-        status: 'ACTIVE',
-        createdAt: '2024-02-05'
+    const params = useParams<{ id: string }>()
+
+    const [loading, setLoading] = useState(true)
+
+    const [category, setCategory] = useState<Category>({
+        id: '',
+        name: '',
+        description: '',
+        status: 'INACTIVE',
+        createdAt: ''
     })
 
     const isActive = category.status === 'ACTIVE'
+
+    const loadCategory = async () => {
+        setLoading(true)
+        const res = await getCategoryById(params.id)
+
+        if (!res.success) {
+            toast.error(res.message ?? "Error al cargar categoría")
+            setCategory({
+                id: '',
+                name: '',
+                description: '',
+                status: 'INACTIVE',
+                createdAt: ''
+            })
+        } else {
+            setCategory(res.data ?? [])
+        }
+
+        setLoading(false)
+    }
+
+    const saveChanges = async () => {
+        setLoading(true)
+        const res = await updateCategory(params.id, category)
+        if (!res.success) {
+            toast.error(res.message ?? "Error al actualizar categoría")
+        } else {
+            toast.success("Categoría actualizada correctamente")
+            setCategory(res.data ?? category)
+        }
+        setLoading(false)
+    }
+
+    useEffect(() => {
+        loadCategory()
+    }, [])
 
     return (
         <div className="space-y-6">
@@ -27,7 +72,6 @@ export default function CategoryDetailPage() {
                         <label className="text-sm font-medium">ID</label>
                         <input
                             value={category.id}
-                            onChange={(e) => (console.log('test'))}
                             className="mt-1 w-full border border-slate-400 rounded px-3 py-2 text-sm bg-slate-100 text-slate-500"
                             disabled
                         />
@@ -36,7 +80,6 @@ export default function CategoryDetailPage() {
                         <label className="text-sm font-medium">Fecha de creación:</label>
                         <input
                             value={category.createdAt}
-                            onChange={(e) => (console.log('test'))}
                             className="mt-1 w-full border border-slate-400 rounded px-3 py-2 text-sm bg-slate-100 text-slate-500"
                             disabled
                         />
@@ -103,7 +146,10 @@ export default function CategoryDetailPage() {
                 </div>
 
                 <div className="flex justify-end pt-4">
-                    <button className="bg-slate-800 text-white px-4 py-2 rounded text-sm hover:bg-slate-700 cursor-pointer">
+                    <button
+                        className="bg-slate-800 text-white px-4 py-2 rounded text-sm hover:bg-slate-700 cursor-pointer"
+                        onClick={saveChanges}
+                    >
                         Guardar cambios
                     </button>
                 </div>
@@ -114,6 +160,8 @@ export default function CategoryDetailPage() {
                 <MetricCard title="Dados de baja" value="3" />
                 <MetricCard title="Total bienes" value="15" />
             </div>
+
+            <Loading show={loading} />
         </div>
     )
 }
