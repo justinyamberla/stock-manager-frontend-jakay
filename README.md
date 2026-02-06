@@ -1,36 +1,145 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📦 Inventory Management Frontend — Next.js + TypeScript
 
-## Getting Started
+Frontend desarrollado como parte de un **technical test**, enfocado en la gestión de inventario, bienes, reportes y movimientos.  
+La aplicación **consume endpoints del backend** según los requerimientos del reto, sin replicar lógica de negocio del servidor.
 
-First, run the development server:
+---
+
+## 🧩 Stack Tecnológico
+
+- **Next.js** (App Router)
+- **TypeScript**
+- **React**
+- **Tailwind CSS**
+- **Jest + React Testing Library**
+- **JWT Auth**
+- **Fetch API**
+- **React Hot Toast**
+
+---
+
+## 🎯 Funcionalidades Implementadas
+
+### ✅ Gestión de Categorías
+- Listado de categorías
+- Creación y actualización
+
+### ✅ Gestión de Bienes (Items)
+- Alta individual
+- Alta por lote
+- Listado con filtros
+- Activación / desactivación
+
+### ✅ Reportes
+- Reportes por categoría
+- Métricas de activos vs dados de baja
+
+### ✅ Movimientos de Inventario
+- Historial de movimientos
+- Filtro por tipo (Altas / Bajas)
+
+## 🔌 Integración con Backend
+
+Este frontend **consume datos exclusivamente desde el backend mock implementado en la misma app**, usando endpoints como:
+
+- `/categories`
+- `/items`
+- `/reports/category`
+- `/movements`
+- `/auth`
+
+Toda la lógica de persistencia y reglas de negocio reside en el servidor local.
+
+---
+
+## 🔐 Autenticación (JWT)
+
+El proyecto utiliza **JWT (JSON Web Tokens)** para la autenticación del administrador.
+
+### Implementación:
+- Tokens almacenados en **cookies HTTP**
+- Validación del token mediante **middleware de Next.js**
+- Protección de rutas privadas (`/admin/*`)
+- Redirección automática si el usuario no está autenticado
+- Acceso bloqueado a páginas protegidas sin sesión válida
+
+📌 Esto asegura que solo usuarios autenticados puedan acceder al panel administrativo.
+
+---
+
+## ▶️ Cómo Ejecutar el Proyecto
+
+### 1️⃣ Instalar dependencias
+
+```bash
+npm install
+```
+
+### 2️⃣ Ejecutar en modo desarrollo
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3️⃣ Abrir en el navegador:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+http://localhost:3000
+```
+### 4️⃣ Iniciar sesión con credenciales de prueba:
+- **Email**: `admin@test.com`
+- **Password**: `123456`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🧪 Ejecutar Tests
 
-To learn more about Next.js, take a look at the following resources:
+El proyecto incluye **tests unitarios y de integración básicos** usando **Jest** y **React Testing Library**.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### ▶️ Ejecutar todos los tests
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run test
+```
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🧪 Sobre los Tests Implementados
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Se incluyeron **tests unitarios y de integración básicos**, seleccionados estratégicamente para validar:
+
+### ✔️ Unit Tests
+- Servicios que consumen API
+- Manejo de errores en peticiones
+- Normalización de respuestas del backend
+
+### ✔️ Integration Tests
+- Renderizado de páginas clave
+- Carga de datos asincrónicos
+- Aplicación de filtros en UI
+- Interacción entre componentes y estado
+
+> No se busca cobertura completa, sino demostrar **cómo estructurar tests útiles, mantenibles y realistas en frontend**.
+
+---
+
+## 📎 Notas Finales
+
+Este proyecto fue desarrollado priorizando:
+
+- Arquitectura clara y modular
+- Separación entre lógica de UI y consumo de API
+- Buenas prácticas en React + Next.js
+- Experiencia de usuario simple y funcional
+- Testing práctico enfocado en casos reales
+
+El alcance del testing es **intencionalmente parcial**, ya que el objetivo principal del reto es demostrar **criterio técnico, estructura limpia y capacidad de integración frontend**, más que cobertura total.
+
+---
+
+## 👤 Autor
+
+**Justin Yamberla**  
+Frontend Developer
+
+---
