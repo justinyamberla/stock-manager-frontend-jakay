@@ -31,7 +31,7 @@
     },
     {
       "id": "item_4800c83a",
-      "name": "Laptop DELL ABC",
+      "name": "Laptop DELL XYZ",
       "category": "Electrónica",
       "status": "ACTIVE",
       "createdAt": "2026-02-06 14:06:03"
@@ -122,6 +122,24 @@
         "item_5869cbcd"
       ],
       "timestamp": "2026-02-06 15:49:32"
+    },
+    {
+      "id": "mov_f0113e3f",
+      "type": "DEACTIVATE",
+      "mode": "SINGLE",
+      "targetIds": [
+        "item_4800c83a"
+      ],
+      "timestamp": "2026-02-06 17:30:33"
+    },
+    {
+      "id": "mov_d655fd49",
+      "type": "ADD",
+      "mode": "SINGLE",
+      "targetIds": [
+        "item_4800c83a"
+      ],
+      "timestamp": "2026-02-06 17:31:04"
     }
   ]
 }

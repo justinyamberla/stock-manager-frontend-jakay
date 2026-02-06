@@ -1,5 +1,6 @@
 import { NextResponse, NextRequest } from "next/server"
 import { createItem, getItems } from "@/repositories/item.repo"
+import {logMovement} from "@/repositories/movement.repo";
 
 export async function GET() {
     try {
@@ -31,6 +32,8 @@ export async function POST(req: NextRequest) {
         }
 
         const category = createItem(data)
+
+        logMovement("ADD", "SINGLE", [category.id])
 
         return NextResponse.json({
             success: true,

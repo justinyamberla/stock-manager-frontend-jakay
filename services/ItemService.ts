@@ -132,3 +132,31 @@ export async function deactivateItemsBatch(itemIds: string[]) {
         }
     }
 }
+
+export async function updateItem(id: string, item: Partial<Item>) {
+    try {
+        const res = await fetch(`${API_URL}/items/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify(item),
+        });
+
+        const data = await res.json();
+
+        return {
+            success: data.success ?? res.ok,
+            data: data.data ?? null,
+            message: data.message ?? "Operación exitosa",
+        };
+    } catch (error: any) {
+        console.error("Error en updateItem:", error);
+        return {
+            success: false,
+            data: null,
+            message: error.message || "Ocurrió un error inesperado",
+        };
+    }
+}

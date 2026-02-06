@@ -1,5 +1,6 @@
 import {NextRequest, NextResponse} from "next/server";
 import {getItemById, updateItem} from "@/repositories/item.repo";
+import {logMovement} from "@/repositories/movement.repo";
 
 export async function GET( _req: NextRequest, { params }: { params: Promise<{ id: string }> } ) {
     const { id } = await params
@@ -21,23 +22,28 @@ export async function GET( _req: NextRequest, { params }: { params: Promise<{ id
     }
 }
 
-export async function PUT( req: NextRequest, { params }: { params: Promise<{ id: string }> } ) {
+export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
+        const updates = await req.json()
         const { id } = await params
-        const data = await req.json()
 
-        const updated = updateItem(id, data)
+        const { updatedItem, previousStatus } = updateItem(id, updates)
 
-        return NextResponse.json({
+        if (previousStatus !== updatedItem.status) {
+            logMovement(
+                updatedItem.status === "ACTIVE" ? "ADD" : "DEACTIVATE",
+                "SINGLE",
+                [updatedItem.id]
+            )
+        }
+
+        return Response.json({
             success: true,
             message: "Bien actualizado correctamente",
-            data: updated,
-        }, { status: 201 })
+            data: updatedItem
+        }, { status: 200 })
 
     } catch (err: any) {
-        return NextResponse.json({
-            success: false,
-            message: err.message,
-        }, {status: 404})
+        return Response.json({ success: false, message: err.message }, { status: 400 })
     }
 }

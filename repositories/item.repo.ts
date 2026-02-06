@@ -46,27 +46,33 @@ export function createItem(data: Pick<Item, "name" | "category">) {
     return item
 }
 
-export function updateItem(id: string, data: Partial<Pick<Item, "name" | "category" | "status">>) {
+export function updateItem(id: string, updates: Partial<Item>) {
     const db = readDB()
     const items = db.items
+    const categories = db.categories
 
-    const itemIndex = items.findIndex((i: Item) => i.id === id)
-    if (itemIndex === -1) throw new Error("Item no encontrado")
+    const item = items.find((i: { id: string }) => i.id === id)
 
-    const updatedItem = {
-        ...items[itemIndex],
-        ...data
+    if (!item) throw new Error("Bien no encontrado")
+
+    const categoryExists = categories.find((c: { name: string; }) => c.name === updates.category)
+
+    if (!categoryExists) {
+        throw new Error("La categoría ingresada no existe")
     }
 
-    items[itemIndex] = updatedItem
+    const previousStatus = item.status
 
-    writeDB({
-        ...db,
-        items
-    })
+    Object.assign(item, updates)
 
-    return updatedItem
+    writeDB({ ...db, items })
+
+    return {
+        updatedItem: item,
+        previousStatus
+    }
 }
+
 
 export function createItemsBatch(batch: { name: string; category: string }[]) {
     const db = readDB()
@@ -104,6 +110,30 @@ export function createItemsBatch(batch: { name: string; category: string }[]) {
     }
 
     return createdItems;
+}
+
+export function deactivateItem(id: string) {
+    const db = readDB()
+    const items = db.items
+
+    const itemIndex = items.findIndex((i: { id: string }) => i.id === id)
+
+    if (itemIndex === -1) {
+        throw new Error("El bien no existe")
+    }
+
+    if (items[itemIndex].status === "INACTIVE") {
+        throw new Error("El bien ya está inactivo")
+    }
+
+    items[itemIndex].status = "INACTIVE"
+
+    writeDB({
+        ...db,
+        items
+    })
+
+    return items[itemIndex]
 }
 
 export function deactivateItemsBatch(itemIds: string[]) {
