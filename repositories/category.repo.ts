@@ -1,5 +1,5 @@
 import { Category } from "@/types/domain"
-import { generateId, nowISO } from "@/lib/utils"
+import { generateId, formattedTodayDate } from "@/lib/utils"
 import { readDB, writeDB } from "@/lib/dbHelper"
 
 export function getCategories() {
@@ -26,7 +26,7 @@ export function createCategory(data: Pick<Category, "name" | "description">) {
         name: data.name,
         description: data.description,
         status: "ACTIVE",
-        createdAt: nowISO()
+        createdAt: formattedTodayDate()
     }
 
     categories.push(category)

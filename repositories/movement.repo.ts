@@ -1,6 +1,6 @@
 import { movements } from "@/lib/db.json"
 import { Movement } from "@/types/domain"
-import { generateId, nowISO } from "@/lib/utils"
+import { generateId, formattedTodayDate } from "@/lib/utils"
 
 export function logMovement(
     type: Movement["type"],
@@ -12,7 +12,7 @@ export function logMovement(
         type,
         mode,
         targetIds,
-        timestamp: nowISO()
+        timestamp: formattedTodayDate()
     }
 
     movements.push(movement)

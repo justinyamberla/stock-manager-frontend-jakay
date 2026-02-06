@@ -20,6 +20,7 @@ export async function GET( _req: NextRequest, { params }: { params: Promise<{ id
         }, {status: 404})
     }
 }
+
 export async function PUT( req: NextRequest, { params }: { params: Promise<{ id: string }> } ) {
     try {
         const { id } = await params

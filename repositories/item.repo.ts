@@ -1,7 +1,18 @@
-import { items } from "@/lib/db.json"
 import { Item } from "@/types/domain"
-import { generateId, nowISO } from "@/lib/utils"
+import { generateId, formattedTodayDate } from "@/lib/utils"
 import {readDB, writeDB} from "@/lib/dbHelper";
+
+export function getItems() {
+    const db = readDB()
+    return db.items
+}
+
+export function getItemById(id: string) {
+    const db = readDB()
+    const item = db.items.find((i: Item) => i.id === id)
+    if (!item) throw new Error("Item no encontrado")
+    return item
+}
 
 export function createItem(data: Pick<Item, "name" | "category">) {
     const db = readDB()
@@ -15,7 +26,7 @@ export function createItem(data: Pick<Item, "name" | "category">) {
         name: data.name,
         category: data.category,
         status: "ACTIVE",
-        createdAt: nowISO()
+        createdAt: formattedTodayDate()
     }
 
     items.push(item)
@@ -28,34 +39,24 @@ export function createItem(data: Pick<Item, "name" | "category">) {
     return item
 }
 
-export function createItemsBatch(data: Pick<Item, "name" | "category">) {
-    const created = data.map(name => createItem(name, category))
-    return created
-}
+export function updateItem(id: string, data: Partial<Pick<Item, "name" | "category" | "status">>) {
+    const db = readDB()
+    const items = db.items
 
-export function getItems(filters?: { status?: string, categoryId?: string }) {
-    return items.filter(item => {
-        if (filters?.status && item.status !== filters.status) return false
-        if (filters?.categoryId && item.categoryId !== filters.categoryId) return false
-        return true
-    })
-}
+    const itemIndex = items.findIndex((i: Item) => i.id === id)
+    if (itemIndex === -1) throw new Error("Item no encontrado")
 
-export function deactivateItem(id: string) {
-    const item = items.find(i => i.id === id)
-    if (!item) throw new Error("Item not found")
-
-    item.status = "INACTIVE"
-    return item
-}
-
-export function deactivateItemsBatch(ids: string[]) {
-    const updated = []
-
-    for (const id of ids) {
-        const item = deactivateItem(id)
-        updated.push(item)
+    const updatedItem = {
+        ...items[itemIndex],
+        ...data
     }
 
-    return updated
+    items[itemIndex] = updatedItem
+
+    writeDB({
+        ...db,
+        items
+    })
+
+    return updatedItem
 }

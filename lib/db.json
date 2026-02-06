@@ -21,6 +21,14 @@
       "createdAt": "2026-02-06T05:57:04.838Z"
     }
   ],
-  "items": [],
+  "items": [
+    {
+      "id": "item_fee46086",
+      "name": "Silla ergonómica XL",
+      "category": "Muebles",
+      "status": "INACTIVE",
+      "createdAt": "2026-02-06 13:40:42"
+    }
+  ],
   "movements": []
 }
