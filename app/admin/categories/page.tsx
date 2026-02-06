@@ -1,49 +1,45 @@
 'use client'
 
 import Link from 'next/link'
-import {useState} from "react";
+import { useEffect, useState } from "react"
 import CreateCategoryModal from "@/components/CreateCategoryModal";
-
-const mockCategories = [
-    {
-        id: '1',
-        name: 'Electrónica',
-        description: 'Dispositivos electrónicos y accesorios',
-        status: 'ACTIVE',
-        itemsCount: 12
-    },
-    {
-        id: '2',
-        name: 'Muebles',
-        description: 'Mobiliario de oficina y hogar',
-        status: 'INACTIVE',
-        itemsCount: 8
-    },
-    {
-        id: '3',
-        name: 'Herramientas',
-        description: 'Herramientas manuales y eléctricas',
-        status: 'ACTIVE',
-        itemsCount: 15
-    }
-]
+import { fetchCategories } from "@/services/CategoryService"
+import Loading from "@/components/Loading";
+import toast from "react-hot-toast";
 
 export default function CategoriesPage() {
+    const [loading, setLoading] = useState(true)
     const [open, setOpen] = useState(false)
 
+    const [categories, setCategories] = useState<any[]>([])
     const [search, setSearch] = useState("")
     const [statusFilter, setStatusFilter] = useState("ALL")
 
-    const filtered = mockCategories.filter((asset) => {
-        const matchesSearch =
-            asset.name.toLowerCase().includes(search.toLowerCase())
+    const filtered = categories.filter((category) => {
+        const matchesSearch = category.name.toLowerCase().includes(search.toLowerCase())
 
-        const matchesStatus =
-            statusFilter === "ALL" || asset.status === statusFilter
+        const matchesStatus = statusFilter === "ALL" || category.status === statusFilter
 
         return matchesSearch && matchesStatus
     })
 
+    const loadCategories = async () => {
+        setLoading(true)
+        const res = await fetchCategories()
+
+        if (!res.success) {
+            toast.error(res.message ?? "Error al cargar categorías")
+            setCategories([])
+        } else {
+            setCategories(res.data ?? [])
+        }
+
+        setLoading(false)
+    }
+
+    useEffect(() => {
+        loadCategories()
+    }, [])
 
     return (
         <div className="space-y-6">
@@ -93,16 +89,12 @@ export default function CategoriesPage() {
                             {category.description}
                         </p>
 
-                        <span className="text-xs bg-slate-100 px-2 py-1 rounded text-slate-600">
-                            {category.itemsCount} bienes
-                        </span>
-
-                        <span className={`text-xs px-2 py-1 rounded text-slate-600 mx-2 ${
+                        <span className={`text-xs font-semibold px-2 py-1 rounded ${
                             category.status === "ACTIVE"
                                 ? "bg-green-100 text-green-700"
                                 : "bg-red-100 text-red-700"
                         }`}>
-                            {category.status}
+                            {category.status === "ACTIVE" ? "Activo" : "Dado de baja"}
                         </span>
                     </Link>
                 ))}
@@ -112,11 +104,18 @@ export default function CategoriesPage() {
                 <div
                     className="text-center text-slate-500 py-6"
                 >
-                    No hay bienes registrados
+                    No hay categorías registradas
                 </div>
             )}
 
-            {open && <CreateCategoryModal onClose={() => setOpen(false)} />}
+            {open && (
+                <CreateCategoryModal
+                    onClose={() => setOpen(false)}
+                    onCreated={() => {loadCategories()}}
+                />
+            )}
+
+            <Loading show={loading} />
         </div>
     )
 }

@@ -43,7 +43,6 @@ export default function LoginPage() {
                 <h1 className="text-2xl font-semibold text-slate-800 text-center">
                     Login de Admin
                 </h1>
-
                 <p className="text-sm text-slate-500 text-center mt-2">
                     Accede al panel de control de inventario
                 </p>
@@ -83,7 +82,7 @@ export default function LoginPage() {
 
                     <button
                         type="submit"
-                        className="w-full bg-slate-900 text-white rounded-lg py-2 hover:bg-slate-800 transition font-medium"
+                        className="w-full bg-slate-900 text-white rounded-lg py-2 hover:bg-slate-800 transition font-medium cursor-pointer"
                     >
                         Iniciar sesión
                     </button>

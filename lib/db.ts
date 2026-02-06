@@ -8,7 +8,29 @@ export const adminUser: AdminUser = {
     role: "ADMIN"
 }
 
-export const categories: Category[] = []
+export const categories: Category[] = [
+    {
+        id: '1',
+        name: 'Electrónica',
+        description: 'Dispositivos electrónicos y accesorios',
+        status: 'ACTIVE',
+        createdAt: "2024-01-01T00:00:00.000Z",
+    },
+    {
+        id: '2',
+        name: 'Muebles',
+        description: 'Mobiliario de oficina y hogar',
+        status: 'INACTIVE',
+        createdAt: "2024-01-01T00:00:00.000Z",
+    },
+    {
+        id: '3',
+        name: 'Herramientas',
+        description: 'Herramientas manuales y eléctricas',
+        status: 'ACTIVE',
+        createdAt: "2024-01-01T00:00:00.000Z",
+    }
+]
 
 export const items: Item[] = []
 

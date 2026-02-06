@@ -167,7 +167,7 @@ export default function ItemDetailPage() {
                     </button>
                 </div>
             </div>
-            
+
             <div className="bg-white rounded shadow-sm p-6 space-y-3">
                 <h2 className="font-semibold text-sm">Historial de movimientos</h2>
 
