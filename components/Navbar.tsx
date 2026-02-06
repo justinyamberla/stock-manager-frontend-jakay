@@ -6,7 +6,6 @@ export default function Navbar({ onMenu }: { onMenu?: () => void }) {
     const pathname = usePathname()
 
     const titleMap: Record<string, string> = {
-        '/admin': 'Dashboard',
         '/admin/categories': 'Categorías',
         '/admin/items': 'Bienes',
         '/admin/reports': 'Reportes',

@@ -44,7 +44,7 @@ export default function CategoriesPage() {
     return (
         <div className="space-y-6">
             <p className="text-sm">
-                En esta sección se gestionan las categorías de bienes del inventario.
+                En esta sección visualiza y gestiona las categorías de bienes del inventario.
             </p>
             <div className="flex justify-end">
                 <button

@@ -62,7 +62,6 @@ export default function MovementsPage() {
                             key={m.id}
                             className="border-t border-slate-300 hover:bg-slate-50 transition"
                         >
-                            {/* Type */}
                             <td className="px-4 py-3">
                                 <span
                                     className={`px-2 py-1 rounded text-xs font-medium ${
@@ -75,23 +74,19 @@ export default function MovementsPage() {
                                 </span>
                             </td>
 
-                            {/* Mode */}
                             <td className="px-4 py-3 text-slate-600">
                                 {m.mode === "BATCH" ? "Lote" : "Individual"}
                             </td>
 
-                            {/* Count */}
                             <td className="px-4 py-3 font-medium">
                                 {m.targetIds.length}
                             </td>
 
-                            {/* Target IDs */}
                             <td className="px-4 py-3 text-xs font-mono text-slate-500">
                                 {m.targetIds.slice(0, 4).join(", ")}
                                 {m.targetIds.length > 4 && " ..."}
                             </td>
 
-                            {/* Timestamp */}
                             <td className="px-4 py-3 text-slate-500">
                                 {m.timestamp}
                             </td>
