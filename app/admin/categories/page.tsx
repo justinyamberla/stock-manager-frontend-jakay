@@ -108,6 +108,14 @@ export default function CategoriesPage() {
                 ))}
             </div>
 
+            {filtered.length === 0 && (
+                <div
+                    className="text-center text-slate-500 py-6"
+                >
+                    No hay bienes registrados
+                </div>
+            )}
+
             {open && <CreateCategoryModal onClose={() => setOpen(false)} />}
         </div>
     )

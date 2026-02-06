@@ -53,7 +53,6 @@ export default function ItemDetailPage() {
 
     return (
         <div className="space-y-6">
-            {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
                     <p className="text-sm">
@@ -62,9 +61,7 @@ export default function ItemDetailPage() {
                 </div>
             </div>
 
-            {/* Card */}
             <div className="bg-white rounded shadow-sm p-6 space-y-6">
-                {/* Top info */}
                 <div className="grid md:grid-cols-2 gap-4">
                     <div>
                         <label className="text-sm font-medium">Código</label>
@@ -75,7 +72,6 @@ export default function ItemDetailPage() {
                             disabled
                         />
                     </div>
-
                     <div>
                         <label className="text-sm font-medium">Fecha de creación</label>
                         <input
@@ -140,7 +136,6 @@ export default function ItemDetailPage() {
                                 </p>
                             </div>
 
-                            {/* Switch */}
                             <button
                                 onClick={() =>
                                     updateField(
@@ -162,7 +157,6 @@ export default function ItemDetailPage() {
                     </div>
                 </div>
 
-                {/* Actions */}
                 <div className="flex justify-end gap-3 pt-2">
                     <button
                         onClick={handleSave}
@@ -173,8 +167,7 @@ export default function ItemDetailPage() {
                     </button>
                 </div>
             </div>
-
-            {/* History */}
+            
             <div className="bg-white rounded shadow-sm p-6 space-y-3">
                 <h2 className="font-semibold text-sm">Historial de movimientos</h2>
 

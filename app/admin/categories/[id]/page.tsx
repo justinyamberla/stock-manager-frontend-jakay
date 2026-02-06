@@ -15,19 +15,14 @@ export default function CategoryDetailPage() {
 
     return (
         <div className="space-y-6">
-
-            {/* Header */}
             <div>
                 <p className="text-sm">
                     Gestiona la información de esta categoría
                 </p>
             </div>
 
-            {/* Main Card */}
             <div className="bg-white rounded shadow p-6 space-y-5">
-
                 <div className="grid md:grid-cols-2 gap-4">
-                    {/* ID */}
                     <div>
                         <label className="text-sm font-medium">ID</label>
                         <input
@@ -37,9 +32,6 @@ export default function CategoryDetailPage() {
                             disabled
                         />
                     </div>
-
-                    {/* Created At */}
-
                     <div>
                         <label className="text-sm font-medium">Fecha de creación:</label>
                         <input
@@ -51,7 +43,6 @@ export default function CategoryDetailPage() {
                     </div>
                 </div>
 
-                {/* Name */}
                 <div>
                     <label className="text-sm font-medium">Nombre</label>
                     <input
@@ -63,7 +54,6 @@ export default function CategoryDetailPage() {
                     />
                 </div>
 
-                {/* Description */}
                 <div>
                     <label className="text-sm font-medium">Descripción</label>
                     <textarea
@@ -75,7 +65,6 @@ export default function CategoryDetailPage() {
                     />
                 </div>
 
-                {/* Status Switch */}
                 <div>
                     <div>
                         <label className="text-sm font-medium">Estado
@@ -113,24 +102,18 @@ export default function CategoryDetailPage() {
                     </div>
                 </div>
 
-                {/* Save */}
                 <div className="flex justify-end pt-4">
                     <button className="bg-slate-800 text-white px-4 py-2 rounded text-sm hover:bg-slate-700 cursor-pointer">
                         Guardar cambios
                     </button>
                 </div>
-
             </div>
 
-            {/* Metrics */}
             <div className="grid md:grid-cols-3 gap-4">
-
                 <MetricCard title="Bienes activos" value="12" />
                 <MetricCard title="Dados de baja" value="3" />
                 <MetricCard title="Total bienes" value="15" />
-
             </div>
-
         </div>
     )
 }

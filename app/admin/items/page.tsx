@@ -54,7 +54,7 @@ export default function ItemsPage() {
             <p className="text-sm">
                 Visualiza y gestiona los bienes existentes del inventario
             </p>
-            {/* Header */}
+
             <div className="flex justify-end">
                 <div className="flex gap-2">
                     <button className="bg-slate-800 text-white px-4 py-2 rounded text-sm hover:bg-slate-700 transition cursor-pointer">
@@ -67,7 +67,6 @@ export default function ItemsPage() {
                 </div>
             </div>
 
-            {/* Filters */}
             <div className="flex flex-col md:flex-row gap-3">
                 <input
                     value={search}
@@ -75,7 +74,6 @@ export default function ItemsPage() {
                     placeholder="Buscar por nombre o código..."
                     className="bg-slate-50 border border-slate-300 rounded px-3 py-2 text-sm w-full md:w-72"
                 />
-
                 <select
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
@@ -87,7 +85,6 @@ export default function ItemsPage() {
                 </select>
             </div>
 
-            {/* Table */}
             <div className="overflow-x-auto bg-white rounded shadow-sm">
                 <table className="w-full text-sm">
                     <thead className="bg-slate-100 text-slate-700">
