@@ -1,6 +1,6 @@
-import { Movement } from "@/types/domain"
-import { generateId, formattedTodayDate } from "@/lib/utils"
-import {readDB} from "@/lib/dbHelper";
+import {Movement} from "@/types/domain"
+import {formattedTodayDate, generateId} from "@/lib/utils"
+import {readDB, writeDB} from "@/lib/dbHelper";
 
 export function logMovement(
     type: Movement["type"],
@@ -19,12 +19,16 @@ export function logMovement(
     }
 
     movements.push(movement)
+
+    writeDB({
+        ...db,
+        movements
+    })
+
     return movement
 }
 
 export function getMovements() {
     const db = readDB()
-    const movements = db.movements
-
-    return movements
+    return db.movements
 }

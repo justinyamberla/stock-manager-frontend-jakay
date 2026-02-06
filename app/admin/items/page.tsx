@@ -3,7 +3,7 @@
 import Link from "next/link"
 import {useEffect, useState} from "react"
 import toast from "react-hot-toast";
-import {fetchItem} from "@/services/ItemService";
+import {deactivateItemsBatch, fetchItems} from "@/services/ItemService";
 import Loading from "@/components/Loading";
 import CreateItemModal from "@/components/CreateItemModal";
 import CreateBatchItemModal from "@/components/CreateBatchItemModal";
@@ -14,6 +14,8 @@ export default function ItemsPage() {
     const [openCreateBatchItemModal, setOpenCreateBatchItemModal] = useState(false)
 
     const [items, setItems] = useState<any[]>([])
+    const [selectedIds, setSelectedIds] = useState<string[]>([])
+
     const [search, setSearch] = useState("")
     const [statusFilter, setStatusFilter] = useState("ALL")
 
@@ -25,9 +27,25 @@ export default function ItemsPage() {
         return matchesSearch && matchesStatus
     })
 
+    const toggleSelect = (id: string) => {
+        setSelectedIds(prev =>
+            prev.includes(id)
+                ? prev.filter(itemId => itemId !== id)
+                : [...prev, id]
+        )
+    }
+
+    const toggleSelectAll = () => {
+        if (selectedIds.length === items.length) {
+            setSelectedIds([])
+        } else {
+            setSelectedIds(items.map(item => item.id))
+        }
+    }
+
     const loadItems = async () => {
         setLoading(true)
-        const res = await fetchItem()
+        const res = await fetchItems()
 
         if (!res.success) {
             toast.error(res.message ?? "Error al cargar bienes")
@@ -37,6 +55,27 @@ export default function ItemsPage() {
         }
 
         setLoading(false)
+    }
+
+    async function handleBatchDeactivate() {
+        if (selectedIds.length === 0) {
+            toast.error("No hay bienes seleccionados")
+            return
+        }
+
+        const confirmed = confirm(`¿Dar de baja ${selectedIds.length} bienes?`)
+        if (!confirmed) return
+
+        const res = await deactivateItemsBatch(selectedIds)
+
+        if (!res.success) {
+            toast.error(res.message ?? "Error al dar de baja lote")
+            return
+        }
+
+        toast.success(res.message ?? "Bienes dados de baja")
+        loadItems();
+        setSelectedIds([])
     }
 
     useEffect(() => {
@@ -64,6 +103,13 @@ export default function ItemsPage() {
                     >
                         📦 Carga masiva
                     </button>
+
+                    <button
+                        onClick={handleBatchDeactivate}
+                        className="bg-red-600 text-white px-4 py-2 rounded text-sm transition hover:bg-red-700 cursor-pointer"
+                    >
+                        Dar de baja ({selectedIds.length})
+                    </button>
                 </div>
             </div>
 
@@ -89,6 +135,13 @@ export default function ItemsPage() {
                 <table className="w-full text-sm">
                     <thead className="bg-slate-100 text-slate-700">
                     <tr>
+                        <th className="text-left px-4 py-3">
+                            <input
+                                type="checkbox"
+                                checked={items.length > 0 && selectedIds.length === items.length}
+                                onChange={toggleSelectAll}
+                            />
+                        </th>
                         <th className="text-left px-4 py-3">Código</th>
                         <th className="text-left px-4 py-3">Nombre</th>
                         <th className="text-left px-4 py-3">Categoría</th>
@@ -99,36 +152,43 @@ export default function ItemsPage() {
                     </thead>
 
                     <tbody>
-                    {filtered.map((asset) => (
+                    {filtered.map((item) => (
                         <tr
-                            key={asset.id}
+                            key={item.id}
                             className="border-t border-slate-300 hover:bg-slate-50 transition"
                         >
-                            <td className="px-4 py-3 font-mono">{asset.id}</td>
-                            <td className="px-4 py-3">{asset.name}</td>
+                            <td className="px-4 py-3">
+                                <input
+                                    type="checkbox"
+                                    checked={selectedIds.includes(item.id)}
+                                    onChange={() => toggleSelect(item.id)}
+                                />
+                            </td>
+                            <td className="px-4 py-3 font-mono">{item.id}</td>
+                            <td className="px-4 py-3">{item.name}</td>
                             <td className="px-4 py-3 text-slate-600">
-                                {asset.category}
+                                {item.category}
                             </td>
 
                             <td className="px-4 py-3">
                                 <span
                                     className={`px-2 py-1 rounded text-xs font-medium ${
-                                        asset.status === "ACTIVE"
+                                        item.status === "ACTIVE"
                                             ? "bg-green-100 text-green-700"
                                             : "bg-red-100 text-red-700"
                                     }`}
                                 >
-                                    {asset.status === "ACTIVE" ? "Activo" : "Dado de baja"}
+                                    {item.status === "ACTIVE" ? "Activo" : "Dado de baja"}
                                 </span>
                             </td>
 
                             <td className="px-4 py-3 text-slate-500">
-                                {asset.createdAt}
+                                {item.createdAt}
                             </td>
 
                             <td className="px-4 py-3 text-right space-x-2">
                                 <Link
-                                    href={`/admin/items/${asset.id}`}
+                                    href={`/admin/items/${item.id}`}
                                     className="text-slate-600 hover:text-black text-sm mx-2"
                                 >
                                     ✏️ Ver y editar

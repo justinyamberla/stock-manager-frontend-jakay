@@ -69,7 +69,6 @@ export function updateItem(id: string, data: Partial<Pick<Item, "name" | "catego
 }
 
 export function createItemsBatch(batch: { name: string; category: string }[]) {
-
     const db = readDB()
     const categories = db.categories
     const items = db.items
@@ -106,3 +105,33 @@ export function createItemsBatch(batch: { name: string; category: string }[]) {
 
     return createdItems;
 }
+
+export function deactivateItemsBatch(itemIds: string[]) {
+    const db = readDB()
+    const items = db.items
+
+    const updatedItems = []
+
+    for (const id of itemIds) {
+        const item = items.find((i: { id: string }) => i.id === id)
+
+        if (!item) {
+            throw new Error(`El bien con id ${id} no existe`)
+        }
+
+        if (item.status === "INACTIVE") {
+            continue
+        }
+
+        item.status = "INACTIVE"
+        updatedItems.push(item)
+    }
+
+    writeDB({
+        ...db,
+        items
+    })
+
+    return updatedItems
+}
+

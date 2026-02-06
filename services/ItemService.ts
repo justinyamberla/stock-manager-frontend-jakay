@@ -1,7 +1,7 @@
 import { API_URL} from "@/lib/urls";
 import { Item } from "@/types/domain";
 
-export async function fetchItem() {
+export async function fetchItems() {
     try {
         const res = await fetch(`${API_URL}/items/`, {
             headers: {
@@ -106,5 +106,29 @@ export async function createBatchItems(items: Partial<Item>[]) {
             data: null,
             message: error.message || "Ocurrió un error inesperado",
         };
+    }
+}
+
+export async function deactivateItemsBatch(itemIds: string[]) {
+    try {
+        const res = await fetch(`${API_URL}/items/batch/deactivate`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ itemIds }),
+            credentials: "include"
+        })
+
+        const data = await res.json()
+
+        return {
+            success: data.success ?? res.ok,
+            data: data.data ?? null,
+            message: data.message ?? null
+        }
+    } catch (error: any) {
+        return {
+            success: false,
+            message: error.message
+        }
     }
 }
