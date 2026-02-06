@@ -51,20 +51,17 @@ export default function ItemsPage() {
 
     return (
         <div className="space-y-6">
+            <p className="text-sm">
+                Visualiza y gestiona los bienes existentes del inventario
+            </p>
             {/* Header */}
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-                <div>
-                    <p className="text-sm">
-                        Visualiza y gestiona los bienes existentes del inventario
-                    </p>
-                </div>
-
+            <div className="flex justify-end">
                 <div className="flex gap-2">
-                    <button className="bg-slate-800 text-white px-4 py-2 rounded text-sm hover:bg-slate-700 transition">
+                    <button className="bg-slate-800 text-white px-4 py-2 rounded text-sm hover:bg-slate-700 transition cursor-pointer">
                         ➕ Crear bien
                     </button>
 
-                    <button className="bg-slate-700 text-white px-4 py-2 rounded text-sm hover:bg-slate-600 transition">
+                    <button className="bg-slate-700 text-white px-4 py-2 rounded text-sm hover:bg-slate-600 transition cursor-pointer">
                         📦 Carga masiva
                     </button>
                 </div>
@@ -117,17 +114,15 @@ export default function ItemsPage() {
                             </td>
 
                             <td className="px-4 py-3">
-                  <span
-                      className={`px-2 py-1 rounded text-xs font-medium ${
-                          asset.status === "ACTIVE"
-                              ? "bg-green-100 text-green-700"
-                              : "bg-red-100 text-red-700"
-                      }`}
-                  >
-                    {asset.status === "ACTIVE"
-                        ? "Activo"
-                        : "Dado de baja"}
-                  </span>
+                                <span
+                                    className={`px-2 py-1 rounded text-xs font-medium ${
+                                        asset.status === "ACTIVE"
+                                            ? "bg-green-100 text-green-700"
+                                            : "bg-red-100 text-red-700"
+                                    }`}
+                                >
+                                    {asset.status === "ACTIVE" ? "Activo" : "Dado de baja"}
+                                </span>
                             </td>
 
                             <td className="px-4 py-3 text-slate-500">
