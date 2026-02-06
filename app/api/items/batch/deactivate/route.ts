@@ -16,6 +16,16 @@ export async function POST(req: NextRequest) {
 
         const updated = deactivateItemsBatch(itemIds)
 
+        if (updated.length === 0) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    message: "No se actualizó ningún bien (ya estaban dados de baja)"
+                },
+                { status: 200 }
+            )
+        }
+
         logMovement(
             "DEACTIVATE",
             "BATCH",

@@ -155,22 +155,7 @@ export default function CategoryDetailPage() {
                 </div>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-4">
-                <MetricCard title="Bienes activos" value="12" />
-                <MetricCard title="Dados de baja" value="3" />
-                <MetricCard title="Total bienes" value="15" />
-            </div>
-
             <Loading show={loading} />
-        </div>
-    )
-}
-
-function MetricCard({ title, value }: { title: string; value: string }) {
-    return (
-        <div className="bg-white rounded shadow p-4">
-            <p className="text-xs text-slate-500">{title}</p>
-            <p className="text-2xl font-semibold">{value}</p>
         </div>
     )
 }

@@ -48,6 +48,8 @@ export default function CreateBatchItemModal({
             category: i.category!
         }))
 
+        console.log(items)
+
         const res = await createBatchItems(items)
 
         if (!res.success) {
