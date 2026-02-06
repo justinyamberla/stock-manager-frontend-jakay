@@ -59,7 +59,7 @@ export default function CategoriesPage() {
                 <input
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    placeholder="Buscar por nombre o código..."
+                    placeholder="Buscar por nombre"
                     className="bg-slate-50 border border-slate-300 rounded px-3 py-2 text-sm w-full md:w-72"
                 />
 

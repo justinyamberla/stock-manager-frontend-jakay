@@ -80,3 +80,31 @@ export async function createItem(item: Partial<Item>) {
         };
     }
 }
+
+export async function createBatchItems(items: Partial<Item>[]) {
+    try {
+        const res = await fetch(`${API_URL}/items/batch`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify(items),
+        });
+
+        const data = await res.json();
+
+        return {
+            success: data.success ?? res.ok,
+            data: data.data ?? null,
+            message: data.message ?? "Operación exitosa",
+        };
+    } catch (error: any) {
+        console.error("Error en createBatchItems:", error);
+        return {
+            success: false,
+            data: null,
+            message: error.message || "Ocurrió un error inesperado",
+        };
+    }
+}

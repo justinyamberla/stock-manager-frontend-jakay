@@ -17,9 +17,16 @@ export function getItemById(id: string) {
 export function createItem(data: Pick<Item, "name" | "category">) {
     const db = readDB()
     const items = db.items
+    const categories = db.categories
 
     const exists = items.find((i: Item) => i.name === data.name && i.category === data.category)
     if (exists) throw new Error("El item ya existe en esta categoría")
+
+    const categoryExists = categories.find((c: { name: string; }) => c.name === data.category)
+
+    if (!categoryExists) {
+        throw new Error("La categoría ingresada no existe")
+    }
 
     const item: Item = {
         id: generateId("item"),
@@ -59,4 +66,43 @@ export function updateItem(id: string, data: Partial<Pick<Item, "name" | "catego
     })
 
     return updatedItem
+}
+
+export function createItemsBatch(batch: { name: string; category: string }[]) {
+
+    const db = readDB()
+    const categories = db.categories
+    const items = db.items
+
+    const createdItems = []
+
+    for (const entry of batch) {
+        if (!entry.name || !entry.category) {
+            throw new Error("Linea de lote mal formateada")
+        }
+
+        const categoryExists = categories.find((c: { name: string; }) => c.name === entry.category)
+
+        if (!categoryExists) {
+            throw new Error("Una categoría ingresada en el lote no existe")
+        }
+
+        const newItem = {
+            id: generateId("item"),
+            name: entry.name,
+            category: entry.category,
+            status: "ACTIVE",
+            createdAt: formattedTodayDate()
+        }
+
+        items.push(newItem)
+        writeDB({
+            ...db,
+            items
+        })
+
+        createdItems.push(newItem)
+    }
+
+    return createdItems;
 }

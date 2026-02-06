@@ -16,7 +16,7 @@ export type Item = {
 
 export type Movement = {
     id: string
-    type: "ADD" | "REMOVE"
+    type: "ADD" | "DEACTIVATE"
     mode: "SINGLE" | "BATCH"
     targetIds: string[]
     timestamp: string

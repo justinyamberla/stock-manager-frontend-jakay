@@ -4,18 +4,16 @@ import { logMovement } from "@/repositories/movement.repo"
 
 export async function POST(req: NextRequest) {
     try {
-        const { categoryId, items } = await req.json()
+        const items = await req.json()
 
-        if (!categoryId || !Array.isArray(items) || items.length === 0) {
+        if (!Array.isArray(items) || items.length === 0) {
             return NextResponse.json(
-                { error: "Invalid batch data" },
+                { success: false, message: "Lote vacío o inválido" },
                 { status: 400 }
             )
         }
 
-        const names = items.map((i: { name: string }) => i.name)
-
-        const created = createItemsBatch(categoryId, names)
+        const created = createItemsBatch(items)
 
         logMovement(
             "ADD",
@@ -23,8 +21,16 @@ export async function POST(req: NextRequest) {
             created.map(i => i.id)
         )
 
-        return NextResponse.json(created, { status: 201 })
+        return NextResponse.json({
+            success: true,
+            message: `Se crearon ${created.length} bienes`,
+            data: created
+        }, { status: 201 })
+
     } catch (err: any) {
-        return NextResponse.json({ error: err.message }, { status: 400 })
+        return NextResponse.json({
+            success: false,
+            message: err.message,
+        }, { status: 400 })
     }
 }

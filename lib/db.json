@@ -42,6 +42,41 @@
       "category": "Electrónica",
       "status": "ACTIVE",
       "createdAt": "2026-02-06 14:18:45"
+    },
+    {
+      "id": "item_e16477e0",
+      "name": "Laptop ASUS",
+      "category": "Electrónica",
+      "status": "ACTIVE",
+      "createdAt": "2026-02-06 15:13:24"
+    },
+    {
+      "id": "item_1a03046c",
+      "name": "Escritorio PC",
+      "category": "Muebles",
+      "status": "ACTIVE",
+      "createdAt": "2026-02-06 15:13:24"
+    },
+    {
+      "id": "item_637257ab",
+      "name": "Fuente de poder 50W",
+      "category": "Electrónica",
+      "status": "ACTIVE",
+      "createdAt": "2026-02-06 15:14:16"
+    },
+    {
+      "id": "item_5869cbcd",
+      "name": "Fuente de poder 50W",
+      "category": "Electrónica",
+      "status": "ACTIVE",
+      "createdAt": "2026-02-06 15:14:23"
+    },
+    {
+      "id": "item_8f25bc65",
+      "name": "Silla Gamer XL",
+      "category": "Muebles",
+      "status": "ACTIVE",
+      "createdAt": "2026-02-06 15:14:23"
     }
   ],
   "movements": []

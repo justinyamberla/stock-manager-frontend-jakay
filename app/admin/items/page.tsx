@@ -6,10 +6,12 @@ import toast from "react-hot-toast";
 import {fetchItem} from "@/services/ItemService";
 import Loading from "@/components/Loading";
 import CreateItemModal from "@/components/CreateItemModal";
+import CreateBatchItemModal from "@/components/CreateBatchItemModal";
 
 export default function ItemsPage() {
     const [loading, setLoading] = useState(true)
-    const [open, setOpen] = useState(false)
+    const [openCreateItemModal, setOpenCreateItemModal] = useState(false)
+    const [openCreateBatchItemModal, setOpenCreateBatchItemModal] = useState(false)
 
     const [items, setItems] = useState<any[]>([])
     const [search, setSearch] = useState("")
@@ -50,13 +52,14 @@ export default function ItemsPage() {
             <div className="flex justify-end">
                 <div className="flex gap-2">
                     <button
-                        onClick={() => setOpen(true)}
+                        onClick={() => setOpenCreateItemModal(true)}
                         className="bg-slate-800 text-white px-4 py-2 rounded text-sm hover:bg-slate-700 transition cursor-pointer"
                     >
                         ➕ Crear bien
                     </button>
 
                     <button
+                        onClick={() => setOpenCreateBatchItemModal(true)}
                         className="bg-slate-700 text-white px-4 py-2 rounded text-sm hover:bg-slate-600 transition cursor-pointer"
                     >
                         📦 Carga masiva
@@ -68,7 +71,7 @@ export default function ItemsPage() {
                 <input
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    placeholder="Buscar por nombre o código..."
+                    placeholder="Buscar por nombre"
                     className="bg-slate-50 border border-slate-300 rounded px-3 py-2 text-sm w-full md:w-72"
                 />
                 <select
@@ -148,10 +151,17 @@ export default function ItemsPage() {
                 </table>
             </div>
 
-            {open && (
+            {openCreateItemModal && (
                 <CreateItemModal
-                    onClose={() => setOpen(false)}
-                    onCreated={() => {loadItems()}}
+                    onClose={() => setOpenCreateItemModal(false)}
+                    onCreated={() => loadItems()}
+                />
+            )}
+
+            {openCreateBatchItemModal && (
+                <CreateBatchItemModal
+                    onClose={() => setOpenCreateBatchItemModal(false)}
+                    onCreated={() => loadItems()}
                 />
             )}
 
