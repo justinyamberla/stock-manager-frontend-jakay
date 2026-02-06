@@ -1,22 +1,35 @@
 import { items } from "@/lib/db.json"
 import { Item } from "@/types/domain"
 import { generateId, nowISO } from "@/lib/utils"
+import {readDB, writeDB} from "@/lib/dbHelper";
 
-export function createItem(name: string, categoryId: string) {
+export function createItem(data: Pick<Item, "name" | "category">) {
+    const db = readDB()
+    const items = db.items
+
+    const exists = items.find((i: Item) => i.name === data.name && i.category === data.category)
+    if (exists) throw new Error("El item ya existe en esta categoría")
+
     const item: Item = {
         id: generateId("item"),
-        name,
-        categoryId,
+        name: data.name,
+        category: data.category,
         status: "ACTIVE",
         createdAt: nowISO()
     }
 
     items.push(item)
+
+    writeDB({
+        ...db,
+        items
+    })
+
     return item
 }
 
-export function createItemsBatch(categoryId: string, names: string[]) {
-    const created = names.map(name => createItem(name, categoryId))
+export function createItemsBatch(data: Pick<Item, "name" | "category">) {
+    const created = data.map(name => createItem(name, category))
     return created
 }
 

@@ -9,7 +9,7 @@ export type Category = {
 export type Item = {
     id: string
     name: string
-    categoryId: string
+    category: string
     status: "ACTIVE" | "INACTIVE"
     createdAt: string
 }
