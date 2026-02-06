@@ -1,53 +1,45 @@
 "use client"
 
 import Link from "next/link"
-import { useState } from "react"
-
-type Asset = {
-    id: string
-    name: string
-    categoryId: string
-    status: "ACTIVE" | "INACTIVE"
-    createdAt: string
-}
-
-const MOCK_ASSETS: Asset[] = [
-    {
-        id: "1",
-        name: "Laptop Dell XPS",
-        categoryId: "Tecnología",
-        status: "ACTIVE",
-        createdAt: "2025-02-01",
-    },
-    {
-        id: "2",
-        name: "Silla ergonómica",
-        categoryId: "Mobiliario",
-        status: "INACTIVE",
-        createdAt: "2025-01-28",
-    },
-    {
-        id: "3",
-        name: "Monitor Samsung",
-        categoryId: "Tecnología",
-        status: "ACTIVE",
-        createdAt: "2025-02-03",
-    },
-]
+import {useEffect, useState} from "react"
+import toast from "react-hot-toast";
+import {fetchItem} from "@/services/ItemService";
+import Loading from "@/components/Loading";
+import CreateItemModal from "@/components/CreateItemModal";
 
 export default function ItemsPage() {
+    const [loading, setLoading] = useState(true)
+    const [open, setOpen] = useState(false)
+
+    const [items, setItems] = useState<any[]>([])
     const [search, setSearch] = useState("")
     const [statusFilter, setStatusFilter] = useState("ALL")
 
-    const filtered = MOCK_ASSETS.filter((asset) => {
-        const matchesSearch =
-            asset.name.toLowerCase().includes(search.toLowerCase())
+    const filtered = items.filter((category) => {
+        const matchesSearch = category.name.toLowerCase().includes(search.toLowerCase())
 
-        const matchesStatus =
-            statusFilter === "ALL" || asset.status === statusFilter
+        const matchesStatus = statusFilter === "ALL" || category.status === statusFilter
 
         return matchesSearch && matchesStatus
     })
+
+    const loadItems = async () => {
+        setLoading(true)
+        const res = await fetchItem()
+
+        if (!res.success) {
+            toast.error(res.message ?? "Error al cargar bienes")
+            setItems([])
+        } else {
+            setItems(res.data ?? [])
+        }
+
+        setLoading(false)
+    }
+
+    useEffect(() => {
+        loadItems()
+    }, [])
 
     return (
         <div className="space-y-6">
@@ -57,11 +49,16 @@ export default function ItemsPage() {
 
             <div className="flex justify-end">
                 <div className="flex gap-2">
-                    <button className="bg-slate-800 text-white px-4 py-2 rounded text-sm hover:bg-slate-700 transition cursor-pointer">
+                    <button
+                        onClick={() => setOpen(true)}
+                        className="bg-slate-800 text-white px-4 py-2 rounded text-sm hover:bg-slate-700 transition cursor-pointer"
+                    >
                         ➕ Crear bien
                     </button>
 
-                    <button className="bg-slate-700 text-white px-4 py-2 rounded text-sm hover:bg-slate-600 transition cursor-pointer">
+                    <button
+                        className="bg-slate-700 text-white px-4 py-2 rounded text-sm hover:bg-slate-600 transition cursor-pointer"
+                    >
                         📦 Carga masiva
                     </button>
                 </div>
@@ -93,7 +90,7 @@ export default function ItemsPage() {
                         <th className="text-left px-4 py-3">Nombre</th>
                         <th className="text-left px-4 py-3">Categoría</th>
                         <th className="text-left px-4 py-3">Estado</th>
-                        <th className="text-left px-4 py-3">Fecha</th>
+                        <th className="text-left px-4 py-3">Fecha creación</th>
                         <th className="text-right px-4 py-3">Acciones</th>
                     </tr>
                     </thead>
@@ -107,7 +104,7 @@ export default function ItemsPage() {
                             <td className="px-4 py-3 font-mono">{asset.id}</td>
                             <td className="px-4 py-3">{asset.name}</td>
                             <td className="px-4 py-3 text-slate-600">
-                                {asset.categoryId}
+                                {asset.category}
                             </td>
 
                             <td className="px-4 py-3">
@@ -133,12 +130,6 @@ export default function ItemsPage() {
                                 >
                                     ✏️ Ver y editar
                                 </Link>
-
-                                {asset.status === "ACTIVE" && (
-                                    <button className="text-red-600 hover:text-red-700 text-sm mx-2 cursor-pointer">
-                                        ⛔ Baja
-                                    </button>
-                                )}
                             </td>
                         </tr>
                     ))}
@@ -156,6 +147,15 @@ export default function ItemsPage() {
                     </tbody>
                 </table>
             </div>
+
+            {open && (
+                <CreateItemModal
+                    onClose={() => setOpen(false)}
+                    onCreated={() => {loadItems()}}
+                />
+            )}
+
+            <Loading show={loading} />
         </div>
     )
 }

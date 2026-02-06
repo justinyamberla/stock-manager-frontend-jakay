@@ -28,6 +28,20 @@
       "category": "Muebles",
       "status": "INACTIVE",
       "createdAt": "2026-02-06 13:40:42"
+    },
+    {
+      "id": "item_4800c83a",
+      "name": "Laptop DELL ABC",
+      "category": "Electrónica",
+      "status": "ACTIVE",
+      "createdAt": "2026-02-06 14:06:03"
+    },
+    {
+      "id": "item_3cbb0df3",
+      "name": "Laptop HP 123",
+      "category": "Electrónica",
+      "status": "ACTIVE",
+      "createdAt": "2026-02-06 14:18:45"
     }
   ],
   "movements": []
